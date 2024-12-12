@@ -1,0 +1,106 @@
+using System;
+
+class ATM
+{
+    private decimal balance = 1000m; // Изначальный баланс
+
+    public void DisplayMenu()
+    {
+        Console.WriteLine("\nДобро пожаловать в банкомат!");
+        Console.WriteLine("1. Проверить баланс");
+        Console.WriteLine("2. Снять деньги");
+        Console.WriteLine("3. Пополнить счёт");
+        Console.WriteLine("4. Выход");
+    }
+
+    public void CheckBalance()
+    {
+        Console.WriteLine($"\nВаш текущий баланс: {balance} рублей");
+    }
+
+    public void Withdraw()
+    {
+        Console.Write("\nВведите сумму для снятия: ");
+        if (decimal.TryParse(Console.ReadLine(), out decimal amount))
+        {
+            if (amount <= 0)
+            {
+                Console.WriteLine("Сумма должна быть больше 0.");
+            }
+            else if (amount > balance)
+            {
+                Console.WriteLine("Недостаточно средств на счёте.");
+            }
+            else
+            {
+                balance -= amount;
+                Console.WriteLine($"Вы успешно сняли {amount} рублей.");
+                CheckBalance();
+            }
+        }
+        else
+        {
+            Console.WriteLine("Пожалуйста, введите корректное число.");
+        }
+    }
+
+    public void Deposit()
+    {
+        Console.Write("\nВведите сумму для пополнения: ");
+        if (decimal.TryParse(Console.ReadLine(), out decimal amount))
+        {
+            if (amount <= 0)
+            {
+                Console.WriteLine("Сумма должна быть больше 0.");
+            }
+            else
+            {
+                balance += amount;
+                Console.WriteLine($"Вы успешно пополнили счёт на {amount} рублей.");
+                CheckBalance();
+            }
+        }
+        else
+        {
+            Console.WriteLine("Пожалуйста, введите корректное число.");
+        }
+    }
+
+    public void Run()
+    {
+        while (true)
+        {
+            DisplayMenu();
+            Console.Write("\nВыберите опцию: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    CheckBalance();
+                    break;
+                case "2":
+                    Withdraw();
+                    break;
+                case "3":
+                    Deposit();
+                    break;
+                case "4":
+                    Console.WriteLine("\nСпасибо за использование банкомата. До свидания!");
+                    return;
+                default:
+                    Console.WriteLine("Неверный выбор. Пожалуйста, попробуйте снова.");
+                    break;
+            }
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        ATM atm = new ATM();
+        atm.Run();
+    }
+}
